@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Pokébest - The only Pokemon bot you will ever need for your Discord server. Catch, Trade and Collect your favorite Pokemon, Play Battles and Much More.">
+
+    <link rel="shortcut icon" href="assets/img/logomain.png" type="image/x-icon">
+
+    <link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120x120-precomposed.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152x152-precomposed.png" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/premium.scss">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <title>Pokébest - Discord Pokémon Bot</title>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-216674500-1">
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-216674500-1');
+</script>
+</head>
+
+<style>
+    html {
+        cursor: url('cursor.gif'), auto;
+    }
+    
+     :root {
+        --background-dark: #2d3548;
+        --text-light: rgba(255, 255, 255, 0.6);
+        --text-lighter: rgba(255, 255, 255, 0.9);
+        --spacing-s: 8px;
+        --spacing-m: 16px;
+        --spacing-l: 24px;
+        --spacing-xl: 32px;
+        --spacing-xxl: 64px;
+        --width-container: 1200px;
+    }
+    
+    .hero-section {
+        align-items: flex-start;
+        background-color: #ffffff00;
+        display: flex;
+        min-height: 100%;
+        justify-content: center;
+        padding: var(--spacing-xxl) var(--spacing-l);
+    }
+    
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-column-gap: var(--spacing-l);
+        grid-row-gap: var(--spacing-l);
+        max-width: var(--width-container);
+        width: 100%;
+    }
+    
+    @media(min-width: 540px) {
+        .card-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media(min-width: 960px) {
+        .card-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    .card {
+        list-style: none;
+        position: relative;
+    }
+    
+    .card:before {
+        content: '';
+        display: block;
+        padding-bottom: 65%;
+        width: 100%;
+    }
+    
+    .card__background {
+        background-size: contain;
+        background-position: center;
+        border-radius: var(--spacing-l);
+        bottom: 0;
+        filter: brightness(0.75) saturate(1.2) contrast(0.85);
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        transform-origin: center;
+        trsnsform: scale(1) translateZ(0);
+        transition: filter 200ms linear, transform 200ms linear;
+    }
+    
+    .card:hover .card__background {
+        transform: scale(1.05) translateZ(0);
+    }
+    
+    .card-grid:hover>.card:not(:hover) .card__background {
+        filter: brightness(0.5) saturate(0) contrast(1.2) blur(20px);
+    }
+    
+    .card__content {
+        left: 0;
+        padding: var(--spacing-l);
+        position: absolute;
+        top: 0;
+    }
+    
+    .card__category {
+        color: #fff;
+        font-size: 0.9rem;
+        margin-bottom: var(--spacing-s);
+        text-transform: uppercase;
+        background-color: #35373cb3;
+    }
+    
+    .card__heading {
+        color: var(--text-lighter);
+        font-size: .9rem;
+        text-shadow: 2px 2px 20px rgba(0, 0, 0, 0.2);
+        line-height: 1.4;
+        background-color: #35373cb3;
+    }
+    
+    @media (min-width: 200px) and (max-device-width: 1080px) {
+        .locatie {
+            position: relative;
+            text-align: center;
+        }
+        .locatie iframe {
+            width: 100%;
+            height: 590px;
+            margin: 0 auto;
+            display: block;
+            border: 0;
+        }
+    }
+    
+    @media (min-width: 200px) and (max-device-width: 1080px) {
+        .locatie2 {
+            position: relative;
+            text-align: center;
+        }
+        .locatie2 iframe {
+            width: 100%;
+            height: 503px;
+            margin: 0 auto;
+            display: block;
+            border: 0;
+        }
+    }
+    
+    #snow {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: 1000;
+    }
+</style>
+
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div id="status">&nbsp;</div>
+    </div>
+
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="index.html" class="nav__logo">
+                <img src="assets/img/logomain.png" alt="" class="nav__logo-img"> Pokébest
+            </a>
+
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item">
+                        <a href="index.html" class="nav__link active-link">Home</a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="https://status.watchbot.app/bot/857650250940547115" class="nav__link">Status</a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="store/inr-usd" class="nav__link">Store</a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="https://pokebestbot.gitbook.io/pokebest-bot/" class="nav__link">Commands</a>
+                    </li>
+
+                    <li class="nav__item">
+                        <a href="support.html" class="nav__link">Support</a>
+                    </li>
+
+                    <a href="https://discord.com/oauth2/authorize?client_id=857650250940547115&scope=bot%20applications.commands&permissions=388168" class="button button--ghost">Invite</a>
+
+                </ul>
+
+                <div class="nav__close" id="nav-close">
+                    <i class='bx bx-x'></i>
+                </div>
+
+                <img src="assets/img/logomain.png" alt="" class="nav__img">
+            </div>
+
+            <div class="nav__toggle" id="nav-toggle">
+                <i class='bx bx-grid-alt'></i>
+            </div>
+
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="home container" id="home">
+            <div class="swiper home-swiper">
+                <div class="swiper-wrapper">
+                    <div class="home__content grid">
+                        <div class="home__group">
+                            <img src="assets/img/logomain.png" alt="" class="home__img">
+                            <div class="home__indicator"></div>
+
+                            <div class="home__details-img">
+                                <h4 class="home__details-title">The Pokébest Logo</h4>
+                                <span class="home__details-subtitle">© Pokébest</span>
+                            </div>
+                        </div>
+
+                        <div class="home__data">
+                            <h3 class="home__subtitle"># No. 1 Pokémon Bot For Discord</h3>
+                            <h1 class="home__title">Welcome To<br> Pokébest</h1>
+                            <p class="home__description">Pokébest is a discord bot that lets you catch pokemons while chatting with your friends!
+                            </p>
+
+                            <div class="home__buttons">
+                                <a href="https://discord.com/oauth2/authorize?client_id=857650250940547115&scope=bot%20applications.commands&permissions=388168" class="button">Invite Now</a>
+                                <a href="https://discordlist.gg/bot/857650250940547115/vote" class="button--link button--flex">Vote<i class='bx bx-right-arrow-alt button__icon'></i></a>
+                            </div>
+                        </div>
+                    </div>
+        </section>
+        </div>
+        </div>
+        </section>
+
+        <section class="section discount">
+            <div class="discount__container container grid" style="column-gap: 1px">
+                <div class="discount__data">
+                    <h2 class="discount__title">Pokébest - Pokédex<br>
+                        <h4>Check out your favorite Pokémon<br> through our Pokédex!</h4>
+                    </h2><br>
+                    <div class="home__buttons" style="justify-content: space-evenly;">
+                        <a href="https://pokedex.pokebest.net" target="_blank" class="button" style="padding: 1rem 6rem; border-radius: 10rem">Visit Now</a>
+                    </div>
+                </div>
+
+                <img src="https://media.discordapp.net/attachments/810891979122147338/902886507088584724/poklogo.png" alt="" class="discount__img">
+            </div>
+        </section>
+
+        <section class="section category">
+            <h2 class="section__title">Features</h2>
+
+            <div class="category__container container grid">
+                <div class="category__data" style="padding-bottom: 20px;">
+                    <img src="assets/img/category1-img.png" alt="" class="category__img">
+                    <h3 class="category__title">Easy To Use </h3>
+                    <p class="category__description">Straightforward and user friendly.</p>
+                </div>
+
+                <div class="category__data" style="padding-bottom: 20px;">
+                    <img src="assets/img/category2-img.png" alt="" class="category__img">
+                    <h3 class="category__title">Lag Free</h3>
+                    <p class="category__description">Super fast response.</p>
+                </div>
+            </div>
+            <div class="category__container container grid">
+
+                <div class="category__data">
+                    <img src="assets/img/category3-img.png" alt="" class="category__img">
+                    <h3 class="category__title">Regular Updates</h3>
+                    <p class="category__description">Frequent updates keeps the bot bug-free.</p>
+                </div>
+
+                <div class="category__data">
+                    <img src="assets/img/category4-img.png" alt="" class="category__img">
+                    <h3 class="category__title">Ingame Currency</h3>
+                    <p class="category__description">Catch, trade, gamble and earn coins!</p>
+                </div>
+            </div>
+
+            </div>
+        </section>
+
+        <section class="section discount">
+            <div class="discount__container container grid">
+                <div class="discount__data">
+                    <h2 class="discount__title">What is Pokébest?<br>
+                        <h4>Pokébest is a discord bot that <br> lets you catch pokemons while<br>chatting with your friends.</h4>
+                    </h2>
+                </div>
+
+                <img src="assets/img/logomain.png" alt="" class="discount__img">
+            </div>
+        </section>
+
+        <section class="section category" id="about">
+            <h2 class="section__title">About Pokébest</h2>
+
+            <div class="category__container2 container grid">
+                <div class="category__data" style="padding-bottom: 40px;">
+                    <h3 class="category__title">01. Pokémon Statistics And An amazing Battle Experience.<br><br></h3>
+                    <p class="category__description">A vast range of statistics, so every pokémon is different from the other. There is also a competitive pvp environment to duel with friends with a vast option of moves and options.</p>
+                </div>
+
+                <div class="category__data" style="padding-bottom: 40px;">
+                    <h3 class="category__title">02. Trade, Market And Gamble.<br><br><br></h3>
+                    <p class="category__description">Trading is also a feature along with a huge marketplace. Earn, Sell and Gamble.</p>
+                </div>
+
+                <div class="category__data" style="padding-bottom: 40px;">
+                    <h3 class="category__title">03. Your Own Team And Storage.<br><br><br></h3>
+                    <p class="category__description">Train and level up your pokémon and create your very own unique team to duel other players, also store your pokémons and release the one's you don't want!</p>
+                </div>
+
+
+            </div>
+        </section>
+
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+
+        <section class="hero-section">
+            <div class="card-grid">
+                <a class="card" href="#hero-section">
+                    <div class="card__background" style="background-image: url(https://media.discordapp.net/attachments/810891979122147338/898802567251914782/pokebest-catching.png?width=878&height=579)"></div>
+                    <div class="card__content">
+                        <p class="card__category">Catch & Collect Pokémon</p>
+                        <h3 class="card__heading">Catch Pokémon in the heart of your server. Claim rewards, make friends, and catch 'em all!</h3>
+                    </div>
+                </a>
+                <a class="card" href="#hero-section">
+                    <div class="card__background" style="background-image: url(https://media.discordapp.net/attachments/753907333960302622/944456641292681276/pokebest_raids.png?width=878&height=579)"></div>
+                    <div class="card__content">
+                        <p class="card__category">Raids</p>
+                        <h3 class="card__heading">Raids are a special type of battle which is only available for the support server currently. On every span of 30 minutes, a raid boss spawns in the server. Once the boss is down, a leaderboard appears in the raid announcements channel and you get a DM from the bot about your rewards.</h3>
+                    </div>
+                </a>
+                <a class="card" href="#hero-section">
+                    <div class="card__background" style="background-image: url(https://media.discordapp.net/attachments/753907333960302622/944456641552719922/pokebest-fishing.png?width=878&height=579)"></div>
+                    <div class="card__content">
+                        <p class="card__category">Fishing</p>
+                        <h3 class="card__heading">Yes, you can catch water-type Pokémon using fish. Just use `p!fish` command to do so. There is a chance that it drops credits too. Nothing much here.</h3>
+                    </div>
+                </a>
+                <a class="card" href="#hero-section">
+                    <div class="card__background" style="background-image: url(https://media.discordapp.net/attachments/753907333960302622/944456641787604993/trading.png?width=878&height=579)"></div>
+                    <div class="card__content">
+                        <p class="card__category">Trading</p>
+                        <h3 class="card__heading">Trade Pokémon and credits with friends. Collect Pokémon or become rich with coins! </h3>
+                    </div>
+                </a>
+                <a class="card" href="#hero-section">
+                    <div class="card__background" style="background-image: url(https://media.discordapp.net/attachments/753907333960302622/944456641061978192/market.png?width=878&height=579)"></div>
+                    <div class="card__content">
+                        <p class="card__category">Market</p>
+                        <h3 class="card__heading">Sell and buy Pokémon globally with other users! Search the market for your perfect buy.</h3>
+                    </div>
+                    </li>
+                    <a class="card" href="#hero-section">
+                        <div class="card__background" style="background-image: url(https://media.discordapp.net/attachments/810891979122147338/898802564060049418/giveaways.png?width=878&height=579)"></div>
+                        <div class="card__content">
+                            <p class="card__category">Giveaways</p>
+                            <h3 class="card__heading">Enter into awesome giveaways hosted by our community! Stop by our official server to participate.</h3>
+                        </div>
+                    </a>
+                    <a class="card" href="#hero-section">
+                        <div class="card__background" style="background-image: url(https://media.discordapp.net/attachments/810891979122147338/898802561564430336/gambling.png?width=878&height=579)"></div>
+                        <div class="card__content">
+                            <p class="card__category">Gambling</p>
+                            <h3 class="card__heading">Feel free to gamble and get more Pokébest coins. But beware, you might lose some coins too since its based on luck.</h3>
+                        </div>
+                    </a>
+                    <a class="card" href="#hero-section">
+                        <div class="card__background" style="background-image: url(https://media.discordapp.net/attachments/753907333960302622/944456640827125770/Battling-dueling.png?width=878&height=579)"></div>
+                        <div class="card__content">
+                            <p class="card__category">Dueling</p>
+                            <h3 class="card__heading">There is also a competitive pvp environment to duel with friends with a vast option of moves.</h3>
+                        </div>
+                    </a>
+                    <div>
+        </section>
+
+        <section class="section trick " id="trick ">
+            <h2 class="section__title ">Partners</h2>
+
+            <div class="trick__container container grid " style="justify-content: center">
+
+
+                <div class="trick__content ">
+                    <img src="assets/img/partner2.png " alt=" " class="trick__img ">
+                    <h3 class="trick__title ">Probot</h3>
+                    <span class="trick__subtitle ">Partner</span>
+                    <span class="trick__price ">Visit</span>
+                    <button class="button trick__button ">
+                        <a href="https://probot.io/ "><i class='bx bx-link-alt trick__icon'></i></a>
+                    </button>
+                </div>
+
+                <div class="trick__content ">
+                    <img src="assets/img/partner5.png " alt=" " class="trick__img ">
+                    <h3 class="trick__title ">Helper.gg</h3>
+                    <span class="trick__subtitle ">Partner</span>
+                    <span class="trick__price ">Visit</span>
+                    <button class="button trick__button ">
+                        <a href="https://helper.gg/ "><i class='bx bx-link-alt trick__icon'></i></a>
+                    </button>
+                </div>
+
+                <div class="trick__content ">
+                    <img src="assets/img/partner6.png " alt=" " class="trick__img ">
+                    <h3 class="trick__title ">Hydra</h3>
+                    <span class="trick__subtitle ">Partner</span>
+                    <span class="trick__price ">Visit</span>
+                    <button class="button trick__button ">
+                        <a href="https://hydra.bot/ "><i class='bx bx-link-alt trick__icon'></i></a>
+                    </button>
+                </div>
+                <div class="trick__content ">
+                    <img src="assets/img/partner7.png " alt=" " class="trick__img ">
+                    <h3 class="trick__title ">Giveaways Bot </h3>
+                    <span class="trick__subtitle ">Partner</span>
+                    <span class="trick__price ">Visit</span>
+                    <button class="button trick__button ">
+                        <a href="https://top.gg/bot/606026008109514762 "><i class='bx bx-link-alt trick__icon'></i></a>
+                    </button>
+                </div>
+
+                <div class="trick__content ">
+                    <img src="assets/img/partner9.png " alt=" " class="trick__img ">
+                    <h3 class="trick__title ">Lady Siniister</h3>
+                    <span class="trick__subtitle ">Partner</span>
+                    <span class="trick__price ">Visit</span>
+                    <button class="button trick__button ">
+                            <a href="https://www.instagram.com/ladysiniister/ "><i class='bx bx-link-alt trick__icon'></i></a>
+                        </button>
+                </div>
+                <div class="trick__content " style="">
+                    <img src="assets/img/partner10.png " alt=" " class="trick__img ">
+                    <h3 class="trick__title ">Ko-fi</h3>
+                    <span class="trick__subtitle ">Partner</span>
+                    <span class="trick__price ">Visit</span>
+                    <button class="button trick__button ">
+                            <a href="https://ko-fi.com/"><i class='bx bx-link-alt trick__icon'></i></a>
+                        </button>
+                </div>
+                <div class="trick__content " style="">
+                    <img src="assets/img/partner11.png " alt=" " class="trick__img ">
+                    <h3 class="trick__title ">Koya</h3>
+                    <span class="trick__subtitle ">Partner</span>
+                    <span class="trick__price ">Visit</span>
+                    <button class="button trick__button ">
+                            <a href="https://koya.gg/"><i class='bx bx-link-alt trick__icon'></i></a>
+                        </button>
+                </div>
+                <div class="trick__content " style="">
+                    <img src="assets/img/partner12.png " alt=" " class="trick__img ">
+                    <h3 class="trick__title ">Payal Gaming</h3>
+                    <span class="trick__subtitle ">Partner</span>
+                    <span class="trick__price ">Visit</span>
+                    <button class="button trick__button ">
+                            <a href="https://discord.gg/payal"><i class='bx bx-link-alt trick__icon'></i></a>
+                        </button>
+                </div>
+                <div class="trick__content " style="">
+                    <img src="https://media.discordapp.net/attachments/940544343666745375/971679784402829342/wick.png" alt=" " class="trick__img ">
+                    <h3 class="trick__title ">Wick</h3>
+                    <span class="trick__subtitle ">Partner</span>
+                    <span class="trick__price ">Visit</span>
+                    <button class="button trick__button ">
+                            <a href="https://wickbot.com/"><i class='bx bx-link-alt trick__icon'></i></a>
+                        </button>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+
+    </div>
+
+    <footer class="footer section ">
+        <div class="footer__container container grid ">
+            <div class="footer__content ">
+                <a href="# " class="footer__logo ">
+                    <img src="assets/img/logomain.png " alt=" " class="footer__logo-img "> Pokébest
+                </a>
+
+                <p class="footer__description ">Pokébest is a discord bot that lets you catch pokemons while chatting with your friends.</p><br>
+                <a href="//www.dmca.com/Protection/Status.aspx?ID=2da2859c-9c89-4e9b-82fe-00a61a423569" title="DMCA.com Protection Status" class="dmca-badge"> <img src ="https://images.dmca.com/Badges/dmca_protected_sml_120l.png?ID=2da2859c-9c89-4e9b-82fe-00a61a423569"  alt="DMCA.com Protection Status" /></a>  <script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"> </script>
+                  <br><br>
+                <div class="footer__social ">
+                    <a href="https://twitter.com/Pokebestbot " target="_blank " class="footer__social-link ">
+                        <i class='bx bxl-twitter'></i>
+                    </a>
+                    <a href="https://www.instagram.com/pokebestbot/ " target="_blank " class="footer__social-link ">
+                        <i class='bx bxl-instagram-alt'></i>
+                    </a>
+                    <a href="https://www.patreon.com/Pokebest " target="_blank " class="footer__social-link ">
+                        <i class='bx bxl-patreon'></i>
+                    </a>
+                    <a href="https://discord.com/invite/mKSB66ezB4 " target="_blank " class="footer__social-link ">
+                        <i class='bx bxl-discord'></i>
+                    </a>
+                    <a href="https://www.youtube.com/channel/UCxMoqhfDLWjX7jnT18Sl4Fw " target="_blank " class="footer__social-link ">
+                        <i class='bx bxl-youtube'></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer__content ">
+                <h3 class="footer__title ">Product</h3>
+
+                <ul class="footer__links ">
+                    <li>
+                        <a href="https://discord.com/oauth2/authorize?client_id=857650250940547115&scope=bot%20applications.commands&permissions=388168" class="footer__link ">Invite</a>
+                    </li>
+                    <li>
+                        <a href="https://pokebestbot.gitbook.io/pokebest-bot/ " class="footer__link ">Commands</a>
+                    </li>
+                    <li>
+                        <a href="store/inr-usd " class="footer__link ">Store</a>
+                    </li>
+                    <li>
+                        <a href="https://discordlist.gg/bot/857650250940547115/vote" class="footer__link ">Vote</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="footer__content ">
+                <h3 class="footer__title ">Resources</h3>
+
+                <ul class="footer__links ">
+                    <li>
+                        <a href="policy.html " class="footer__link ">T.O.S</a>
+                    </li>
+                    <li>
+                        <a href="policy.html " class="footer__link ">Privacy Policy</a>
+                    </li>
+                    <li>
+                        <a href="policy.html " class="footer__link ">Refund Policy</a>
+                    </li>
+                    <li>
+                        <a href="index.html#about " class="footer__link ">About</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="footer__content ">
+                <h3 class="footer__title ">Support</h3>
+
+                <ul class="footer__links ">
+                    <li>
+                        <a href="support.html " class="footer__link ">Contact Us</a>
+                    </li>
+                    <li>
+                        <a href="https://dyno.gg/form/d0d57a7c" class="footer__link ">Staff Application</a>
+                    </li>
+                    <li>
+                        <a href="https://dyno.gg/form/7b0db1b9" class="footer__link ">Server Ban Appeal</a>
+                    </li>
+                    <li>
+                        <a href="https://dyno.gg/form/d563daaa" class="footer__link ">Bot Suspension Appeal</a>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+
+        <span class="footer__copy ">© Copyright 2021 Pokébest. All Rights Reserved.</span>
+
+
+    </footer>
+
+
+    <a href="# " class="scrollup " id="scroll-up ">
+        <i class='bx bx-up-arrow-alt scrollup__icon'></i>
+    </a>
+    <script src="assets/js/scrollreveal.min.js "></script>
+
+    <script src="assets/js/swiper-bundle.min.js "></script>
+
+    <script src="assets/js/main.js "></script>
+
+    <script>
+        $(window).on('load', function() { // makes sure the whole site is loaded 
+            $('#status').delay(1000).fadeOut(); // will first fade out the loading animation 
+            $('#preloader').delay(1000).fadeOut('slow'); // will fade out the white DIV that covers the website. 
+            $('body').delay(5050).css({
+                'overflow': 'visible'
+            });
+        })
+    </script>
+    
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"715ab1d6781073c3","version":"2021.12.0","r":1,"token":"839f0564c50748a793730d09b60ecd82","si":100}' crossorigin="anonymous"></script>
+</body>
+
+</html>
